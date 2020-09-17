@@ -1,0 +1,101 @@
+<!-- $Id: user_info.htm 16854 2009-12-07 06:20:09Z sxc_shop $ -->
+{include file="pageheader.htm"}
+<div class="main-div">
+    <form method="post" action="?act=save_config" name="theForm" onsubmit="return validate()">
+        <table width="100%" >
+            <tr>
+                <td class="label">{$lang.custome_secret}:</td>
+                <td>
+                    <input type="radio" name="custome_secret" id="custome_secret_yes" value="1"  onclick="switchKey(1)" />{$lang.yes}
+                    <input type="radio"  name="custome_secret" id="custome_secret_no" value="0"  onclick="switchKey(0)" />{$lang.no}
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="label" valign="top">{$lang.SecretId}:</td>
+                <td class="panel-par"><input name="captcha_secret_id" id="secretId" type="text" value="{$captcha.secret_id}" size="40"></td>
+            </tr>
+
+            <tr>
+                <td class="label" valign="top">{$lang.SecretKey}:</td>
+                <td class="panel-par"><input name="captcha_secret_key" id="secretKey" type="text" value="{$captcha.secret_key}" size="40"></td>
+            </tr>
+            <tr>
+                <td class="label" valign="top">{$lang.CaptchaAppid}:</td>
+                <td class="panel-par"><input name="captcha_app_id" id="CaptchaAppid" type="text" value="{$captcha.captcha_app_id}" size="40"></td>
+            </tr>
+            <tr>
+                <td class="label" valign="top">{$lang.CaptchaAppSecretKey}:</td>
+                <td class="panel-par"><input name="captcha_app_secret_key" id="CaptchaAppSecretKey" type="text" value="{$captcha.captcha_app_secret_key}" size="40"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="{$lang.button_submit}" class="button" />
+                    <input type="reset" value="{$lang.button_reset}" class="button" />
+                    <input type="hidden" id="custome_secret" value="{$captcha.custome_secret}" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{insert_scripts files="../js/utils.js,validator.js"}
+{literal}
+<script language="JavaScript">
+    <!--
+
+    onload = function()
+    {
+        // 开始检查订单
+        startCheckOrder();
+    }
+
+    var customSelect = document.getElementById('custome_secret').value;
+
+    if (customSelect == '1'){
+        document.getElementById('custome_secret_yes').checked=true;
+    }else {
+        document.getElementById('custome_secret_no').checked=true;
+        document.getElementById('secretId').readOnly = true;
+        document.getElementById('secretKey').readOnly=true;
+        document.getElementById('secretId').style.backgroundColor="gainsboro";
+        document.getElementById('secretKey').style.backgroundColor="gainsboro";
+        document.getElementById('secretId').value="{$center.secret_id}";
+        document.getElementById('secretKey').value="{$center.secret_key}";
+    }
+    function switchKey(key) {
+        if (key == 1) {
+            document.getElementById('secretId').readOnly = false;
+            document.getElementById('secretKey').readOnly = false;
+            document.getElementById('secretId').style.backgroundColor="";
+            document.getElementById('secretKey').style.backgroundColor="";
+            document.getElementById('secretId').value="{$captcha.secret_id}";
+            document.getElementById('secretKey').value="{$captcha.secret_key}";
+        }else {
+            document.getElementById('secretId').readOnly=true;
+            document.getElementById('secretKey').readOnly=true;
+            document.getElementById('secretId').style.backgroundColor="gainsboro";
+            document.getElementById('secretKey').style.backgroundColor="gainsboro";
+            document.getElementById('secretId').value="{$center.secret_id}";
+            document.getElementById('secretKey').value="{$center.secret_key}";
+        }
+    }
+
+    /**
+     * 检查表单输入的数据
+     */
+    function validate()
+    {
+        validator = new Validator("theForm");
+        validator.required("secretId",  no_secret_id);
+        validator.required("secretKey", no_secret_key);
+        validator.required("CaptchaAppid", no_captcha_app);
+        validator.required("CaptchaAppSecretKey", no_captcha_secret_key);
+
+        return validator.passed();
+    }
+    //-->
+</script>
+{/literal}
+{include file="pagefooter.htm"}
