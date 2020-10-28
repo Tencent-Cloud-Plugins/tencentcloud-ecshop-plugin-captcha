@@ -31,7 +31,7 @@ class tencent_center {
     const SITE_SECKEY_OPEN = '1';
 
     private $site_app = 'ECSHOP';
-    private $experience_url = 'https://openapp.qq.com/api/public/index.php/upload';
+    private $experience_url = 'https://appdata.qq.com/upload';
 
     /*
      * 获取站点URL
